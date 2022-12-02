@@ -2,10 +2,7 @@
   "name": "advent-of-code-2022",
   "version": "1.0.0",
   "description": "Advent of code 2022",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/rayetzki/advent-of-code-2022.git"
@@ -17,8 +14,5 @@
   ],
   "author": "Illia Raietskyi",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rayetzki/advent-of-code-2022/issues"
-  },
   "homepage": "https://github.com/rayetzki/advent-of-code-2022#readme"
 }
