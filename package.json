@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Advent of code 2022",
   "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/rayetzki/advent-of-code-2022.git"
