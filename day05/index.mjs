@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { parseArgs } from 'util';
+import { parseArgs } from 'node:util';
 
 const input = await readFile('./data.txt', { encoding: 'utf-8' });
 
@@ -14,36 +14,36 @@ const { values: mode } = parseArgs({
   tokens: true,
 });
 
-// TODO: Rewrite to parsing
-const scheme = [
-  ['F', 'T', 'N', 'Z', 'M', 'G', 'H', 'J'],
-  ['J', 'W', 'V'],
-  ['H', 'T', 'B', 'J', 'L', 'V', 'G'],
-  ['L', 'V', 'D', 'C', 'N', 'J', 'P', 'B'],
-  ['G', 'R', 'P', 'M', 'S', 'W', 'F'],
-  ['M', 'V', 'N', 'B', 'F', 'C', 'H', 'G'],
-  ['R', 'M', 'G', 'H', 'D'],
-  ['D', 'Z', 'V', 'M', 'N', 'H'],
-  ['H', 'F', 'N', 'G'],
-];
-
 // Parse input
-const [_, commandsList] = input.split('\n\n');
+const [schemeCode, commandsList] = input.split('\n\n');
 const commands = commandsList.split('\n');
+const arrangement = schemeCode.split('\n');
+
+const length = Number(schemeCode.split('\n').at(-1).split(/\s/g).at(-2));
+const scheme = new Array(length).fill(0).map(() => []);
+arrangement.pop();
+
+for (let i = 1; i <= length; i++) {
+  for (let row = 0; row < arrangement.length; row++) {
+    const rawBox = arrangement[row]
+      .slice((i - 1) * 4, (i - 1) * 4 + 3)
+      .match(/\[([A-Z])\]/);
+
+    if (rawBox === null) continue;
+    scheme[i - 1].push(rawBox[1]);
+  }
+}
 
 // Run commands on scheme
 const regex = /move (?<count>[0-9]+) from (?<from>[0-9]+) to (?<to>[0-9]+)/g;
 
-function moveBlock(command, ordered = false) {
+function moveBlock(command) {
+  const { ordered } = mode;
   const [count, from, to] = Object.values([...command.matchAll(regex)][0].groups).map(Number);
   const values = scheme[from - 1].splice(0, count);
   scheme[to - 1].unshift(...(ordered ? values : values.reverse()));
 }
 
-console.log(mode.ordered)
-
-for (const command of commands) {
-  moveBlock(command, mode.ordered);
-}
+commands.forEach(moveBlock);
 
 console.log(scheme.reduce((acc, stack) => acc + stack[0], ''));
