@@ -20,11 +20,10 @@ const commands = commandsList.split('\n');
 const arrangement = schemeCode.split('\n');
 
 const length = Number(schemeCode.split('\n').at(-1).split(/\s/g).at(-2));
-const scheme = new Array(length).fill(0).map(() => []);
-arrangement.pop();
+const scheme = new Array(length).fill([]);
 
 for (let i = 1; i <= length; i++) {
-  for (let row = 0; row < arrangement.length; row++) {
+  for (let row = 0; row < arrangement.length - 1; row++) {
     const rawBox = arrangement[row]
       .slice((i - 1) * 4, (i - 1) * 4 + 3)
       .match(/\[([A-Z])\]/);
