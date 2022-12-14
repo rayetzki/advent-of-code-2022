@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
+import { REGEX } from '../common.mjs';
 
 const input = await readFile('./data.txt', { encoding: 'utf-8' });
 
@@ -15,11 +16,11 @@ const { values: mode } = parseArgs({
 });
 
 // Parse input
-const [schemeCode, commandsList] = input.split('\n\n');
-const commands = commandsList.split('\n');
-const arrangement = schemeCode.split('\n');
+const [schemeCode, commandsList] = input.split(REGEX.DOUBLE_NEWLINE);
+const commands = commandsList.split(REGEX.NEWLINE);
+const arrangement = schemeCode.split(REGEX.NEWLINE);
 
-const length = Number(schemeCode.split('\n').at(-1).split(/\s/g).at(-2));
+const length = Number(schemeCode.split(REGEX.NEWLINE).at(-1).split(REGEX.SPACE).at(-2));
 const scheme = new Array(length).fill([]);
 
 for (let i = 1; i <= length; i++) {

@@ -1,7 +1,20 @@
 import { readFile } from 'node:fs/promises';
+import { parseArgs } from 'node:util';
 import { REGEX } from '../common.mjs';
 
 const input = await readFile('./data.txt', { encoding: 'utf-8' });
+
+const { values: { knots: count } } = parseArgs({ 
+  options: { 
+    'knots': { 
+      type: 'string',
+      short: 'k',
+      default: '2',
+    }, 
+  },
+  tokens: true,
+});
+
 const moves = input
   .split(REGEX.NEWLINE)
   .map(value => value.split(REGEX.SPACE));
@@ -13,8 +26,8 @@ const knots = [head];
 
 // Instanciate knots
 
-for (let i = 1; i < 10; i++) {
-  knots.push({ ...start }); 
+for (let i = 1; i < +count; i++) {
+  knots.push({ ...start });
 }
 
 const tailWay = new Set([`${start.x}, ${start.y}`]);
@@ -24,7 +37,6 @@ for (const [direction, count] of moves) { // Series of steps; Starting position 
   
   for (let i = steps; i > 0; i--) {  // Steps
     // Update head [x, y]
-    const prevHead = { ...head };
 
     if (direction === "U") head.y++;
     if (direction === "D") head.y--;

@@ -1,8 +1,9 @@
 import { readFile } from 'node:fs/promises';
+import { REGEX } from '../common.mjs';
 
 const input = await readFile('./data.txt', { encoding: 'utf-8' });
 
-const elvesJournal = input.split('\n').reduce((acc, value, index, array) => {
+const elvesJournal = input.split(REGEX.NEWLINE).reduce((acc, value, index, array) => {
   if (value === '' && array[index + 1]) {
     acc.push([]);
   } else if (acc.length === 0) {

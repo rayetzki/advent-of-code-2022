@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { REGEX } from '../common.mjs';
 
 const input = await readFile('./data.txt', { encoding: 'utf-8' });
 
@@ -71,7 +72,7 @@ function findCommon(first, second) {
   return common;
 }
 
-const lines = input.split('\n');
+const lines = input.split(REGEX.NEWLINE);
 
 const prioritiesSum = lines.reduce((sum, item) => {
   const breakpoint = item.length / 2;

@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { REGEX } from '../common.mjs';
 
 const input = await readFile('./data.txt', { encoding: 'utf-8' });
 
@@ -14,7 +15,7 @@ const outcomeScore = {
   'L': 0,
 }
 
-const strategies = input.split('\n').map(x => x.split(/\s/));
+const strategies = input.split(REGEX.NEWLINE).map(x => x.split(REGEX.SPACE));
 
 const totalScoreFollowed = strategies.reduce((score, [opp, you]) => {
   if ((opp === 'C' && you === 'X') || (opp === 'B' && you === 'Z') ||  (opp === 'A' && you === 'Y')) { // Win variant

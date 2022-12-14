@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { REGEX } from '../common.mjs';
 
 const input = await readFile('./data.txt', { encoding: 'utf-8' });
 
@@ -7,7 +8,6 @@ const MAX_SPACE = 70_000_000;
 const SPACE_FOR_UPDATE = 30_000_000;
 
 const ROOT = '/';
-const REGEX = { SPACE: /\s/g, NEWLINE: /\n/g, NUMS: /\[0-9]+/g };
 
 const root = {
   prev: null,
