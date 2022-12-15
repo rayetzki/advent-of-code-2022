@@ -1,7 +1,8 @@
 import { readFile } from 'node:fs/promises';
+import { REGEX } from '../common.mjs';
 
 const input = await readFile('./data.txt', { encoding: 'utf-8' });
-const scheme = input.split('\n');
+const scheme = input.split(REGEX.NEWLINE);
 
 const cols = scheme[0].length;
 const rows = scheme.length;

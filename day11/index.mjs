@@ -70,15 +70,14 @@ class Monkey {
 }
 
 // parse input text and create a list of participating monkeys
-
 const monkeys = input.reduce((monkeyList, text) => {
   // get raw text for each monkey
   const [, itemsStr, operationStr, ...testStr] = text;
 
   // parse text
   const items = itemsStr.match(REGEX.NUMS).map(value => new Item(+value));
-  
   const { operator, operand } = operationStr.match(/new = old (?<operator>[*+-/]) (?<operand>(.+))/).groups;
+  const [divisibleBy, ifTo, elseTo] = testStr.map(str => Number(str.split(REGEX.SPACE).at(-1)));
   
   function operation(old) {
     const on = Number(operand) || old;
@@ -89,19 +88,14 @@ const monkeys = input.reduce((monkeyList, text) => {
     else throw new Error('Operation unknown: ', { cause: { on, operator } });
   }
 
-  const [divisibleBy, ifTo, elseTo] = testStr.map(str => Number(str.split(REGEX.SPACE).at(-1)));
-
   function test(level) {
-    if (level % divisibleBy === 0) return ifTo;
-    return elseTo;
+    return (level % divisibleBy === 0) ? ifTo : elseTo;
   }
   
-  // create monkey
+  // create monkeylevel % divisibleBy === 0
   monkeyList.push(new Monkey(items, operation, test));
   return monkeyList;
 }, []);
-
-const activity = [];
 
 for (let i = 1; i <= ROUNDS; i++) {
   for (const monkey of monkeys) {
@@ -110,6 +104,7 @@ for (let i = 1; i <= ROUNDS; i++) {
 }
 
 // activity after 20 rounds
+const activity = [];
 monkeys.forEach(({ count }) => activity.push(count));
 
 // count monkey business level: 2 most active multiplied

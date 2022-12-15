@@ -5,10 +5,7 @@ const input = await readFile('./data.txt', { encoding: 'utf-8' });
 
 const CHARS_PER_ROW = 40;
 const CHARS_PER_COL = 6;
-const PIXELS = {
-  DARK: '.',
-  LIT: '#',
-};
+const PIXELS = { DARK: '.', LIT: '#' };
 
 let cycle = 0;
 let X = 1;
@@ -32,8 +29,7 @@ for (const signal of input.split(REGEX.NEWLINE)) {
       
       if (cycle !== breakpoint) break;
       signalStrength += breakpoint * X;
-      breakpoint += CHARS_PER_ROW;
-      
+      breakpoint += CHARS_PER_ROW;      
       break;
     }
     
@@ -41,12 +37,11 @@ for (const signal of input.split(REGEX.NEWLINE)) {
       for (let i = 1; i <= 2; i++) {
         renderPixel();
         cycle++;
-       
+
         if (cycle !== breakpoint) continue;
         signalStrength += breakpoint * X;
         breakpoint += CHARS_PER_ROW;
       }
-
 
       X += Number(value);
       break;
@@ -55,4 +50,4 @@ for (const signal of input.split(REGEX.NEWLINE)) {
 }
 
 console.log({ signalStrength });
-console.log(display.map(line => line.join('')).join('\n'));
+console.log(display.map(line => line.join('')).join(REGEX.NEWLINE));
