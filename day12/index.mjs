@@ -1,7 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
+import { REGEX } from '../common.mjs';
 
-const NEWLINE = /\n/g;
+const NEWLINE = new RegExp(REGEX.NEWLINE, 'g');
 
 const { values: { backwards } } = parseArgs({ 
   options: { 
@@ -24,7 +25,7 @@ const MARKERS = {
 };
 
 const input = await readFile('./data.txt', { encoding: 'utf-8' });
-const { length: width } = input.split(/\n/g)[0];
+const { length: width } = input.split(NEWLINE)[0];
 
 // Map here is already processed into a map of heights
 const map = input
@@ -58,7 +59,7 @@ while (queue.length > 0) {
 
   // If we are already at the end point we can break the loop, the path is found
   if (backwards ? (map[point.y][point.x] === 0) : (point.y === end.y && point.x === end.x)) {
-    foundPaths.push(path);
+    foundPaths.push(...path);
     break;
   }
 
@@ -81,10 +82,10 @@ while (queue.length > 0) {
         ? map[p.y] && map[p.y][p.x] >= map[point.y][point.x] - 1 
         : map[p.y] && map[p.y][p.x] <= map[point.y][point.x] + 1
       ))
-    .map((p) => ({ point: p, path: path.concat([{ ...point }]) }))
+    .map((p) => ({ point: p, path: [...path, point] }))
 );
 
   visited.add(pathId);
 }
 
-console.log(foundPaths[0].length);
+console.log(foundPaths.length);
