@@ -229,12 +229,12 @@ function generateValvesMap(input) {
   }
 
   // Generate the shortest paths from each node to all other nodes
-  for (const [_, valve] of valves) {
-    valve.edges = generateShortestPaths(valves, valve.name);
+  for (const [name, valve] of valves) {
+    valve.edges = generateShortestPaths(valves, name);
   }
 
   // Remove the valves that don't have any rate since they dont matter
-  return new Map(valves.filter(([, { rate, name }]) => rate > 0 || name === start));
+  return new Map(valves.filter(([name, { rate }]) => rate > 0 || name === start));
 }
 
 // Using BFS to find the shortest path from a given node to all other nodes in
@@ -262,7 +262,7 @@ function generateShortestPaths(valves, start) {
       }
 
       // Add all the availables tunnels that the current valve can go to
-      // to the queue if they have not been visited yet.
+      // the queue if they have not been visited yet.
       for (const tunnel of tunnels) {
         if (visited.has(tunnel)) continue;
         path.push([tunnel, valve]);

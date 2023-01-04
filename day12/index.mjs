@@ -49,7 +49,7 @@ const end = {
 const id = ({ x, y }) => `(${x}, ${y})`;
 const visited = new Set();
 const foundPaths = [];
-let queue = [
+const queue = [
   { path: [], point: { ...(backwards ? end : start) } },
 ];
 
@@ -76,8 +76,8 @@ while (queue.length > 0) {
 
   // But not all of them are traversable, because of height threshold
   // Add candidates to the queue with the path they've been through
-  queue = queue.concat(
-    neighbours.filter(p => (
+  queue.push(
+    ...neighbours.filter(p => (
       backwards 
         ? map[p.y] && map[p.y][p.x] >= map[point.y][point.x] - 1 
         : map[p.y] && map[p.y][p.x] <= map[point.y][point.x] + 1
