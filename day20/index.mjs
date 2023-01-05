@@ -5,11 +5,10 @@ const input = await readFile('./data.txt', 'utf8');
 const part1 = input.split(REGEX.NEWLINE).map(Number);
 
 function mix(arr, times = 1) {  
-  const before = arr.slice();
-  const list = before.map((num, index) => ({ num, index }));
+  const list = arr.map((num, index) => ({ num, index }));
 
   do {
-    for (const [index, num] of before.entries()) {
+    for (const [index, num] of arr.entries()) {
       const id = list.findIndex(num => num.index === index);
       list.splice(id, 1);
       list.splice((num + id) % list.length, 0, { num, index });
@@ -29,9 +28,8 @@ console.log(getGroveCoordinates(list));
 
 // Part 2
 const DECRYPTION_KEY = 811589153;
-const part2 = input.split(REGEX.NEWLINE).map(num => Number(num) * DECRYPTION_KEY);
 const MIX_TIMES = 10;
 
-// Mix ten times
+const part2 = input.split(REGEX.NEWLINE).map(num => Number(num) * DECRYPTION_KEY);
 const list2 = mix(part2, MIX_TIMES);
 console.log(getGroveCoordinates(list2));
