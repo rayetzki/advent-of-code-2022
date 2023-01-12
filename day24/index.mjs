@@ -29,10 +29,11 @@ function strToMaze(str) {
 
 function getBlizzards(maze) {
   const result = [];
+  const directions = Object.values(DIRECTIONS);
 
   for (const [rowIdx, row] of maze.entries()) {
     for (const [colIdx, col] of row.entries()) {
-      const blizzards = col.filter(item => Object.values(DIRECTIONS).includes(item));
+      const blizzards = col.filter(item => directions.includes(item));
       blizzards.forEach(blizzard => result.push([blizzard, rowIdx, colIdx]));
     }
   }
@@ -134,22 +135,15 @@ function getSimulationResults(simulator, modulo) {
   return simulations;
 }
 
-
-function getNextNodes([row, col], simulations, minutes, visited) {
-  const mazeAsString = simulations[minutes];
-  const maze = strToMaze(mazeAsString);
-  const tiles = [
+function getNextNodes([row, col], simulations, minutes) {
+  const maze = strToMaze(simulations[minutes]);
+  return [
     [row - 1, col],
     [row, col - 1],
     [row, col],
     [row, col + 1],
     [row + 1, col],
-  ];
-
-  return tiles.filter(([r, c]) => {
-    const key = `${r}-${c}-${minutes}`;
-    return maze[r]?.[c] === ELEMENTS.AIR && !visited.has(key);
-  });
+  ].filter(([r, c]) => maze[r]?.[c] === ELEMENTS.AIR);
 }
 
 function walkMaze([from, to], initialMinute, simulations, modulo) {
@@ -163,11 +157,10 @@ function walkMaze([from, to], initialMinute, simulations, modulo) {
 
     if (row === to[0] && col === to[1]) return minutes;
 
-    const nextNodes = getNextNodes([row, col], simulations, (minutes + 1) % modulo, visited);
-
-    for (const node of nextNodes) {
+    for (const node of getNextNodes([row, col], simulations, (minutes + 1) % modulo)) {
+      const key = `${node.join('-')}-${(minutes + 1) % modulo}`;
+      if (visited.has(key)) continue;
       queue.push([node, minutes + 1]);
-      const key = `${node[0]}-${node[1]}-${(minutes + 1) % modulo}`;
       visited.add(key);
     }
   }

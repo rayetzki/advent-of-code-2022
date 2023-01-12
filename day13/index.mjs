@@ -16,7 +16,6 @@ function comparePairs(left, right) {
       if (status === undefined) continue;
       return status;
     }
-
     return comparePairs(left.length, right.length);
   } else if (Number.isInteger(left) && (right instanceof Object)) {
     return comparePairs([left], right);

@@ -14,7 +14,7 @@ const ELEMENTS = {
   VECTOR: '->'
 };
 
-const SAND_POSITION = [500,0];
+const SAND_POSITION = [500, 0];
 
 const id = (x, y) => [x, y].join();
 
@@ -81,9 +81,9 @@ while (true) {
 
 function drawGrid() {
   const entries = [...map.keys()].map(key => key.split(REGEX.SEPARATOR).map(Number));
-  const xes = entries.flatMap(([x, ]) => x);
+  const xs = entries.flatMap(([x, ]) => x);
   const ys = entries.flatMap(([, y]) => y);
-  const [xMin, xMax] = [Math.min(...xes), Math.max(...xes)];
+  const [xMin, xMax] = [Math.min(...xs), Math.max(...xs)];
   const [yMin, yMax] = [Math.min(...ys), Math.max(...ys)];
   const grid = new Array(yMax).fill().map(() => new Array(xMax).fill(ELEMENTS.AIR));
   
@@ -98,3 +98,4 @@ function drawGrid() {
 
 result.write(drawGrid());
 console.log(counter);
+result.close();
